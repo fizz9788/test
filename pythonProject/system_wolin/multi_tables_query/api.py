@@ -1,5 +1,6 @@
+import os
 from decimal import Decimal
-
+from openai import OpenAI
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import func
 from sqlalchemy.orm import Session
@@ -8,9 +9,14 @@ from pythonProject.system_wolin.response import HttpResponse
 from pythonProject.system_wolin.models import ClassInfo
 from pythonProject.system_wolin.models import Student
 from pythonProject.system_wolin.models import Employment
+from dotenv import load_dotenv
 
 multi_tables_query_app=APIRouter()
-
+load_dotenv()
+aliyun_client=OpenAI(
+    api_key=os.getenv("ALIYUN_API_KEY"),
+    base_url="https://dashscope.aliyuncs.com/compatible-mode/v1"
+)
 @multi_tables_query_app.get("/class_stu_emp_info",summary='班级的就业信息')
 def class_stu_emp_info(class_id:int,db:Session=Depends(get_db)):
     result=db.query(ClassInfo,Student,Employment).join(Student,ClassInfo.id==Student.class_id).outerjoin(Employment,Student.id==Employment.student_id).filter(ClassInfo.id==class_id).all()
@@ -50,6 +56,18 @@ def avg_salary_Edu(db:Session=Depends(get_db)):
             }
             result_list.append(student_info)
         return HttpResponse.success(message="学历工资的平均值信息查询成功", data=result_list)
+
+mesage=[]
+@multi_tables_query_app.get("aiQandA",summary="ai问答")
+def ai_qanda(st:str):
+
+    mesage.append({"role": "user", "content": st})
+    response=aliyun_client.chat.completions.create(
+        model="qwen-plus",
+        messages=mesage
+    )
+    mesage.append({"role": "assistant", "content": response.choices[0].message.content})
+    return HttpResponse.success(message="ai问答成功", data=response.choices[0].message.content)
 
 
 

@@ -1,7 +1,10 @@
+import os
+from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker,declarative_base
 
-URL_emp="mysql+pymysql://root:123456@localhost:3306/wolin_system"
+load_dotenv()
+URL_emp=os.getenv("URL_emp")
 engine=create_engine(URL_emp,pool_size=5)
 Session=sessionmaker(bind=engine)
 Base=declarative_base()
