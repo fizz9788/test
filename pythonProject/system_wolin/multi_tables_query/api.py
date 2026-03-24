@@ -44,7 +44,7 @@ def class_stu_emp_info(class_id:int,db:Session=Depends(get_db)):
         raise HTTPException(404,f"未找到{class_id}班的就业信息")
 
 
-@multi_tables_query_app.get("avg_salary_Edu",summary="学历的平均工资")
+@multi_tables_query_app.get("/avg_salary_Edu",summary="学历的平均工资")
 def avg_salary_Edu(db:Session=Depends(get_db)):
     result=db.query(Student.academic,func.avg(Employment.salary) ).join(Employment,Student.id==Employment.student_id).group_by(Student.academic).all()
     result_list=[]
