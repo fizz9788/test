@@ -20,4 +20,4 @@ register_unified_frontend_routes(app)
 
 
 if __name__ == '__main__':
-    uvicorn.run("wlstu_system:app", host="127.0.0.1", port=8020)
+    uvicorn.run("wlstu_system:app", host="127.0.0.1", port=8021)
