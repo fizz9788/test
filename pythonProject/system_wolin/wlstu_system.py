@@ -12,6 +12,10 @@ app.include_router(class_app, prefix="/class", tags=["班级信息管理"])
 app.include_router(student_app, prefix="/student", tags=["学生信息管理"])
 app.include_router(multi_tables_query_app,prefix="/multi_query",tags=["多表查询功能"])
 
+# 注册前端路由
+from frontend.routes import register_frontend_routes
+register_frontend_routes(app)
+
 
 
 # 注册统一前端系统路由
