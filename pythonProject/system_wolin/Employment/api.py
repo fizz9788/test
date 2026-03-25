@@ -2,9 +2,9 @@ from fastapi import APIRouter, Depends,HTTPException
 from sqlalchemy.orm import Session
 from .dao import get_stu_empinfo_sno, get_stu_empinfo_Cname, updata_empinfo, show_db, get_stu_empinfo_salary, \
     salary_top5, show_db_1, emp_time, show_db_2, avg_emp_time, show_db_3, show_db_4
-from pythonProject.system_wolin.database_info import get_db
-from pythonProject.system_wolin.pdc_models import Emp_pdc_model
-from pythonProject.system_wolin.response import HttpResponse
+from database_info import get_db
+from pdc_models import Emp_pdc_model
+from response import HttpResponse
 
 Emp_app = APIRouter()
 
